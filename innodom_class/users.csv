@@ -1,0 +1,4 @@
+ID,Name,Last_name,Mobile_number,Email,Password,Repeat_password,Created_at,Updated_at,Role,Deleted_at,Rating
+0,e,e,958637,e,ddddd$4Dd,ddddd$4Dd,Fri Nov 10 01:13:40 2023,Fri Nov 10 01:13:40 2023,Admin,,0
+1,q,q,242423,q,ddddd$4Dd,ddddd$4Dd,Fri Nov 10 01:13:49 2023,Fri Nov 10 01:13:49 2023,Users,,0
+2,w,w,457363453,w,ddddd$4Dd,ddddd$4Dd,Fri Nov 10 01:14:03 2023,Fri Nov 10 01:14:03 2023,Users,,3.6153846153846154

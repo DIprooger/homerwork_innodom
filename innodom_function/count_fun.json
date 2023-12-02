@@ -1,0 +1,10 @@
+{
+    "squaring_number": {
+        "calls": 12,
+        "attributes": "(number)"
+    },
+    "kub_number": {
+        "calls": 4,
+        "attributes": "(number)"
+    }
+}
