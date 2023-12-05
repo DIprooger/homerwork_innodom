@@ -26,14 +26,14 @@ CREATE TABLE books(
 --статус (строка)
 
 
-CREATE TABLE books(
-    id INT PRIMARY KEY NOT NULL,
+CREATE TABLE tasks(
+  id INT PRIMARY KEY NOT NULL,
   title VARCHAR(25),
-  author VARCHAR(15),
-  genre VARCHAR(10),
-  yare_of_publication INT
+  description VARCHAR(15),
+  start_date DATE,
+  end_date DATE,
+  status VARCHAR(10)
 )
-
 
 --Задача 3
 --Создайте таблицу "Фильмы" со следующими полями:
