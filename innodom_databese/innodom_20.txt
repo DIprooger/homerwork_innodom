@@ -1,0 +1,24 @@
+CREATE TABLE books(
+    id INT PRIMARY KEY NOT NULL,
+  title VARCHAR(25),
+  author VARCHAR(15),
+  genre VARCHAR(10),
+  yare_of_publication INT
+)
+
+CREATE TABLE books(
+    id INT PRIMARY KEY NOT NULL,
+  title VARCHAR(25),
+  author VARCHAR(15),
+  genre VARCHAR(10),
+  yare_of_publication INT
+)
+
+CREATE TABLE moves(
+  id INT PRIMARY KEY NOT NULL,
+  title VARCHAR(25),
+  director VARCHAR(15),
+  release_year INT,
+  rating INT,
+  duration INT
+)
