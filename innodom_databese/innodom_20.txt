@@ -8,7 +8,7 @@
 
 
 CREATE TABLE books(
-    id INT PRIMARY KEY NOT NULL,
+  id INT PRIMARY KEY NOT NULL,
   title VARCHAR(25),
   author VARCHAR(15),
   genre VARCHAR(10),
