@@ -13,7 +13,7 @@ CREATE TABLE books(
   author VARCHAR(15),
   genre VARCHAR(10),
   year_of_publication INT
-)
+);
 
 
 --Задача 2
@@ -33,7 +33,7 @@ CREATE TABLE tasks(
   start_date DATE,
   end_date DATE,
   status VARCHAR(10)
-)
+);
 
 --Задача 3
 --Создайте таблицу "Фильмы" со следующими полями:
@@ -52,4 +52,4 @@ CREATE TABLE moves(
   release_year INT,
   rating INT,
   duration INT
-)
+);
