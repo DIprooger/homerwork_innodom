@@ -12,9 +12,9 @@ CREATE TABLE "user"(
     id INT PRIMARY KEY NOT NULL,
 	first_name VARCHAR(20),
 	last_name VARCHAR(20),
-	email VARCHAR(20),
+	email VARCHAR(30),
 	shipping_address VARCHAR(30)
-)
+);
 
 
 ---Продукты (Products):
@@ -33,7 +33,7 @@ CREATE TABLE products(
 	brand VARCHAR(20),
 	price INT,
 	quantity INT
-)
+);
 
 
 ---Заказы (Orders):
@@ -42,6 +42,16 @@ CREATE TABLE products(
 ---дата (date)
 ---статус (status)
 
+
+CREATE TABLE orders(
+    order_id INT PRIMARY KEY NOT NULL,
+	user_id INT NOT NULL,
+	data DATE,
+	status VARCHAR(20),
+	FOREIGN KEY (user_id) REFERENCES "user"(id)
+);
+
+
 ---Позиции заказов (OrderItems):
 ---order_items_id (уникальный идентификатор позиции заказа)
 ---order_id (идентификатор заказа, связь с таблицей Orders)
@@ -49,7 +59,75 @@ CREATE TABLE products(
 ---количество (quantity)
 ---стоимость (price)
 
+
+CREATE TABLE order_items(
+    order_items_id INT PRIMARY KEY NOT NULL,
+	order_id INT NOT NULL,
+	product_id INT NOT NULL,
+	quantity INT,
+	price INT,
+	FOREIGN KEY (order_id) REFERENCES orders(order_id),
+	FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+
 ---В каждую таблицу добавьте по 10 записей и решите следующие задачи:
+
+--1--
+INSERT INTO
+"user"(id, first_name, last_name, email, shipping_address)
+VALUES
+(1, 'Diana', 'Gerakl', 'd.v.gera@gmail.com', 'Belarus, Minsk'),
+(2, 'Masha', 'Zezar', 'zezar@gmail.com', 'Ucraina, Dombas'),
+(3, 'Pasha', 'Pushkin', 'puchkin@email.ru', 'Izrail, Sector-Gasa'),
+(4, 'Tom', 'Holand', 'holand@gmail.com', 'USA, Boston'),
+(5, 'Galy', 'Otmena', 'otmena@gmail.com', 'Belarus, Gomel'),
+(6, 'Aleksander', 'Macovski', 'Macovski@gmail.com', 'Russa, Moskou'),
+(7, 'Jania', 'Bukin', 'bukin@gmail.com', 'Belarus, Vitebsk'),
+(8, 'Macha', 'Chipushila', 'chipushila@gmail.com', 'Belarus, Minsk'),
+(9, 'Tania', 'Cobchak', 'cobchak@gmail.com', 'Germani, Berlin'),
+(10, 'Vasia', 'Smertia', 'smertia@gmail.com', 'Japan, Tokio');
+
+--2--
+INSERT INTO products(product_id, name, category, brand, price, quantity)
+VALUES (1, 'iPhone 13', 'Electronics', 'Apple', 999, 50),
+       (2, 'Samsung Galaxy S21', 'Electronics', 'Samsung', 899, 70),
+       (3, 'Nike Air Max', 'Footwear', 'Nike', 150, 100),
+       (4, 'Canon EOS R5', 'Electronics', 'Canon', 3499, 20),
+       (5, 'Sony PlayStation 5', 'Electronics', 'Sony', 499, 30),
+       (6, 'Levi`s 501 Jeans', 'Apparel', 'Levi`s', 80, 200),
+       (7, 'Bose QuietComfort', 'Electronics', 'Bose', 299, 40),
+       (8, 'Adidas Ultraboost', 'Footwear', 'Adidas', 180, 150),
+       (9, 'MacBook Pro', 'Electronics', 'Apple', 1499, 10),
+       (10, 'Microsoft Xbox', 'Electronics', 'Microsoft', 499, 25);
+
+--3--
+INSERT INTO orders (order_id, user_id, data, status)
+VALUES (1, 5, '2023-12-01', 'Pending'),
+(2, 9, '2023-12-02', 'Shipped'),
+(3, 3, '2023-12-03', 'Delivered'),
+(4, 2, '2023-12-04', 'Pending'),
+(5, 8, '2023-12-05', 'Cancelled'),
+(6, 4, '2023-12-06', 'Shipped'),
+(7, 7, '2023-12-07', 'Delivered'),
+(8, 6, '2023-12-08', 'Pending'),
+(9, 10, '2023-12-09', 'Shipped'),
+(10, 1, '2023-12-10', 'Delivered');
+
+--4--
+INSERT INTO order_items (order_items_id, order_id, product_id, quantity, price)
+VALUES
+(1, 5, 2, 3, 10),
+(2, 3, 7, 2, 15),
+(3, 6, 8, 1, 20),
+(4, 9, 1, 4, 5),
+(5, 7, 4, 2, 12),
+(6, 4, 6, 3, 8),
+(7, 10, 3, 2, 18),
+(8, 2, 10, 1, 25),
+(9, 8, 5, 4, 6),
+(10, 1, 9, 2, 14);
+
 ---1. Найти все заказы, сделанные определённым пользователем (по его электронной почте).
 ---2. Подсчитать общее количество продуктов в определённой категории.
 ---3. Найти все заказы, сделанные в определённый период времени.
