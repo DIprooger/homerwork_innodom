@@ -1,0 +1,36 @@
+---Создайте триггер, который будет автоматически обновлять поле "quantity" в таблице "Products" из
+---вашего ДЗ к уроку, при каждом добавлении нового заказа в таблицу "OrderItems".
+---Триггер должен уменьшать значение "quantity" на количество товаров, указанное в заказе.
+
+CREATE TRIGGER update_products_quantity
+AFTER INSERT ON order_items
+FOR EACH ROW
+BEGIN
+
+	UPDATE products
+	SET quantity = quantity - new.quantity
+	WHERE product_id = new.product_id;
+
+END;
+
+-- DROP TRIGGER update_product_quantity ON "order_items";
+-- DROP FUNCTION update_product_quantity();
+CREATE FUNCTION update_product_quantity() RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE products
+  SET products.quantity = products.quantity -
+    (SELECT order_items.quantity FROM order_items
+     WHERE products.product_id = order_items.product_id);
+END;
+-- $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_product_quantity
+AFTER INSERT ON order_items
+FOR EACH ROW
+EXECUTE PROCEDURE update_product_quantity()
+
+
+
+ INSERT INTO order_items (order_items_id, order_id, product_id, quantity, price)
+ VALUES
+ (16, 5, 3, 3, 450);
