@@ -199,4 +199,3 @@ FROM orders
 JOIN order_items ON orders.order_id = order_items.order_id
 WHERE orders.data = '2023-12-04'
 GROUP BY orders.order_id;
-
