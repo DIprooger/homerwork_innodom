@@ -1,0 +1,107 @@
+---Спроектируйте и реализуйте с помощью транзакций БД не менее 5-ти таблиц для системы бронирования в кафе.
+---Откатитесь до произвольного savepoint
+
+CREATE DATABASE Cafe;
+
+---Эта таблица хранит информацию о пользователях системы бронирования
+CREATE TABLE Users(
+	id INT PRIMARY KEY NOT NULL,
+	name VARCHAR(20),
+	email VARCHAR(30),
+	phone VARCHAR(30)
+)
+
+---Эта таблица хранит информацию о столах в кафе
+CREATE TABLE Tables(
+	id INT PRIMARY KEY NOT NULL,
+	name VARCHAR(20),
+	email VARCHAR(30),
+	capacity INT
+)
+
+---Эта таблица хранит информацию о бронированиях
+CREATE TABLE Reservations(
+	id INT PRIMARY KEY NOT NULL,
+	user_id INT NOT NULL,
+	table_id INT NOT NULL,
+	date DATE,
+	time TIME,
+	FOREIGN KEY (user_id) REFERENCES Users(id),
+	FOREIGN KEY (table_id) REFERENCES Tables(id)
+);
+
+---Эта таблица хранит информацию о блюдах и напитках, которые предлагает кафе
+CREATE TABLE Items(
+	id INT PRIMARY KEY NOT NULL,
+	name VARCHAR(20),
+	description VARCHAR(100),
+	price DECIMAL(10,2)
+);
+
+---Эта таблица хранит информацию о заказах
+CREATE TABLE Orders(
+	id INT PRIMARY KEY NOT NULL,
+	reservation_id INT NOT NULL,
+	item_id INT NOT NULL,
+	quantity INT,
+	FOREIGN KEY (reservation_id) REFERENCES Reservations(id),
+	FOREIGN KEY (item_id) REFERENCES Items(id)
+);
+__________________________________________________________________________________
+-- Пример транзакции
+BEGIN;
+
+-- Создаем пользователя
+INSERT INTO users (id, name, email, phone)
+VALUES (2, 'John Doe', 'johndoe@example.com', '1234567890');
+
+-- Создаем стол
+INSERT INTO tables (id, name, email, capacity)
+VALUES (2, 'A4', 'johndoe@example.com', 3);
+
+-- Создаем бронирование
+INSERT INTO reservations (id, user_id, table_id, date, time)
+VALUES (2, 1, 1, '2023-12-25', '12:00');
+
+-- Создаем заказ
+INSERT INTO orders (id, reservation_id, item_id, quantity)
+VALUES (3, 1, 1, 1);
+
+SAVEPOINT savepoint_1;
+ROLLBACK TO SAVEPOINT savepoint_1;
+-- Добавляем еще одно блюдо в заказ
+INSERT INTO orders (id, reservation_id, item_id, quantity)
+VALUES (4, 1, 2, 1);
+
+COMMIT;
+
+_______________________________________________________________________________
+BEGIN;
+
+INSERT INTO Users(id, name, email, phone)
+VALUES (1, 'Иван Иванов', 'ivanov@example.com', '1234567890');
+
+INSERT INTO Tables(id, name, email, capacity)
+VALUES (1, 'Стол 1', 'email@example.com', 2);
+
+INSERT INTO Reservations(id, user_id, table_id, date, time)
+VALUES (1, 1, 1, '2023-12-25', '12:00');
+
+INSERT INTO Items(id, name, description, price)
+VALUES (1, 'Меню 1', 'Описание блюда 1', 200.00),
+       (2, 'Меню 2', 'Описание блюда 2', 250.00);
+
+INSERT INTO Orders(id, reservation_id, item_id, quantity)
+VALUES (1, 1, 1, 1);
+
+SAVEPOINT savepoint_1;
+
+INSERT INTO Orders(id, reservation_id, item_id, quantity)
+VALUES (2, 1, 2, 1);
+
+-- Если у вас возникла ошибка, добавьте соответствующую запись в таблицу "items" перед этой строкой
+-- INSERT INTO Items(id, name, description, price) VALUES (2, 'Меню 2', 'Описание блюда 2', 250.00);
+
+ROLLBACK TO SAVEPOINT savepoint_1;
+
+COMMIT;
