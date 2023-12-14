@@ -9,7 +9,7 @@ CREATE TABLE Users(
 	name VARCHAR(20),
 	email VARCHAR(30),
 	phone VARCHAR(30)
-)
+);
 
 ---Эта таблица хранит информацию о столах в кафе
 CREATE TABLE Tables(
@@ -17,7 +17,7 @@ CREATE TABLE Tables(
 	name VARCHAR(20),
 	email VARCHAR(30),
 	capacity INT
-)
+);
 
 ---Эта таблица хранит информацию о бронированиях
 CREATE TABLE Reservations(
@@ -53,25 +53,25 @@ BEGIN;
 
 -- Создаем пользователя
 INSERT INTO users (id, name, email, phone)
-VALUES (2, 'John Doe', 'johndoe@example.com', '1234567890');
+VALUES (1, 'John Doe', 'johndoe@example.com', '1234567890');
 
 -- Создаем стол
 INSERT INTO tables (id, name, email, capacity)
-VALUES (2, 'A4', 'johndoe@example.com', 3);
+VALUES (1, 'A4', 'johndoe@example.com', 3);
 
 -- Создаем бронирование
 INSERT INTO reservations (id, user_id, table_id, date, time)
-VALUES (2, 1, 1, '2023-12-25', '12:00');
+VALUES (1, 1, 1, '2023-12-25', '12:00');
 
 -- Создаем заказ
 INSERT INTO orders (id, reservation_id, item_id, quantity)
-VALUES (3, 1, 1, 1);
+VALUES (2, 1, 1, 1);
 
 SAVEPOINT savepoint_1;
 ROLLBACK TO SAVEPOINT savepoint_1;
 -- Добавляем еще одно блюдо в заказ
 INSERT INTO orders (id, reservation_id, item_id, quantity)
-VALUES (4, 1, 2, 1);
+VALUES (3, 1, 2, 1);
 
 COMMIT;
 
@@ -79,25 +79,25 @@ _______________________________________________________________________________
 BEGIN;
 
 INSERT INTO Users(id, name, email, phone)
-VALUES (1, 'Иван Иванов', 'ivanov@example.com', '1234567890');
+VALUES (2, 'Иван Иванов', 'ivanov@example.com', '1234567890');
 
 INSERT INTO Tables(id, name, email, capacity)
-VALUES (1, 'Стол 1', 'email@example.com', 2);
+VALUES (2, 'Стол 1', 'email@example.com', 2);
 
 INSERT INTO Reservations(id, user_id, table_id, date, time)
-VALUES (1, 1, 1, '2023-12-25', '12:00');
+VALUES (2, 1, 1, '2023-12-25', '12:00');
 
 INSERT INTO Items(id, name, description, price)
-VALUES (1, 'Меню 1', 'Описание блюда 1', 200.00),
-       (2, 'Меню 2', 'Описание блюда 2', 250.00);
+VALUES (2, 'Меню 1', 'Описание блюда 1', 200.00),
+       (3, 'Меню 2', 'Описание блюда 2', 250.00);
 
 INSERT INTO Orders(id, reservation_id, item_id, quantity)
-VALUES (1, 1, 1, 1);
+VALUES (4, 1, 1, 1);
 
 SAVEPOINT savepoint_1;
 
 INSERT INTO Orders(id, reservation_id, item_id, quantity)
-VALUES (2, 1, 2, 1);
+VALUES (5, 1, 2, 1);
 
 -- Если у вас возникла ошибка, добавьте соответствующую запись в таблицу "items" перед этой строкой
 -- INSERT INTO Items(id, name, description, price) VALUES (2, 'Меню 2', 'Описание блюда 2', 250.00);
