@@ -1,70 +1,207 @@
 # 1. Найти все простые циклы в графе.
 
 import networkx as nx
-
-# Создаем граф
-G = nx.DiGraph()  # Вы можете использовать nx.Graph() для ненаправленных графов
-G.add_edges_from([(1, 2), (1, 3), (2, 3), (3, 4), (4, 5), (4, 1)])
+#
+# # Создаем граф
+# G = nx.DiGraph()
+# G.add_edges_from([(1, 2), (1, 3), (2, 3), (3, 4), (4, 5), (4, 1)])
 
 # Находим все простые циклы в графе
-cycles = nx.simple_cycles(G)
+# cycles = nx.simple_cycles(G)
 
 # Выводим количество циклов и сами циклы
-num_cycles = 0
-for cycle in cycles:
-    num_cycles += 1
-    print(f"Cycle {num_cycles}: {cycle}")
-
-print(f"Cycles: {num_cycles}")
+# num_cycles = 0
+# for cycle in cycles:
+#     num_cycles += 1
+#     print(f"Cycle {num_cycles}: {cycle}")
+#
+# print(f"Cycles: {num_cycles}")
 
 
 # 2. Проверить, является ли дерево симметричным.
+
+# def is_symmetric(G):
+#     edges = G.edges()
 #
+#     for u, v in edges:
+#         if (v, u) not in edges:
+#             return False
+#
+#     return True
+#
+#
+# G = nx.Graph()
+# G.add_nodes_from([1, 2, 3, 4])
+# G.add_edges_from([(1, 2), (1, 3), (2, 4), (3, 4)])
+#
+# print(is_symmetric(G))
+
+
 # 3. Определить, является ли граф деревом.
+
+# import networkx as nx
 #
+#
+# def has_cycle(G):
+#     visited = set()
+#     in_stack = set()
+#
+#     def dfs(node):
+#         visited.add(node)
+#         in_stack.add(node)
+#
+#         for neighbor in G.neighbors(node):
+#             if neighbor in visited and neighbor not in in_stack:
+#                 return True
+#
+#             if neighbor not in visited:
+#                 if dfs(neighbor):
+#                     return True
+#
+#         in_stack.remove(node)
+#         return False
+#
+#     for node in G.nodes():
+#         if node not in visited:
+#             if dfs(node):
+#                 return True
+#
+#     return False
+#
+#
+# G = nx.Graph()
+# G.add_nodes_from([1, 2, 3, 4])
+# G.add_edges_from([(1, 2), (1, 3), (2, 4), (3, 4)])
+#
+# print(has_cycle(G))
+
+
 # 4. Найти диаметр дерева.
+
+# import networkx as nx
 #
+#
+# def diameter(G):
+#     """
+#   Находит диаметр дерева.
+#
+#   Args:
+#     G: Граф, представляющий дерево.
+#
+#   Returns:
+#     Число, равное диаметру дерева.
+#   """
+#
+#     if not nx.is_tree(G):
+#         raise ValueError("Граф не является деревом")
+#
+#     # Находим самую длинную цепочку в дереве.
+#
+#     chain = nx.shortest_path(G, source=None, target=None, weight=None)
+#
+#     return len(chain) - 1
+#
+# G = nx.Graph()
+# G.add_edge(1, 2)
+# G.add_edge(2, 3)
+# G.add_edge(3, 4)
+# G.add_edge(4, 5)
+# G.add_edge(5, 6)
+# G.add_edge(6, 7)
+#
+# print(diameter(G))
+
 # 5.* Написать свой класс для работы с графом.
 
-# Класс для хранения узла бинарного дерева.
-class Node:
-    def __init__(self, data, left=None, right=None):
-        self.data = data
-        self.left = left
-        self.right = right
+import networkx as nx
 
-# Функция для проверки того, являются ли поддеревья с корнем `X` и `Y` зеркальными друг другу
-def isSymmetric(X, Y):
-    # Базовый случай: если оба дерева пусты
-    if X is None and Y is None:
+
+class Tree:
+    """
+    Класс для работы с деревом.
+
+    Args:
+        G: Граф, представляющий дерево.
+    """
+
+    def __init__(self, G):
+        self._G = G
+        self._root = find_root(G)
+
+    @property
+    def root(self):
+        """
+        Возвращает корень дерева.
+
+        Returns:
+            Вершина, являющаяся корнем дерева.
+        """
+
+        return self._root
+
+    def is_symmetric(self):
+        """
+        Проверяет, является ли дерево симметричным.
+
+        Returns:
+            True, если дерево симметрично, False в противном случае.
+        """
+
+        edges = self._G.edges()
+
+        for u, v in edges:
+            if (v, u) not in edges:
+                return False
+
         return True
 
-    # возвращает true, если
-    # 1. Оба дерева непусты, и
-    # 2. Левое поддерево является зеркалом правого поддерева, и
-    # 3. Правое поддерево является зеркалом левого поддерева
-    return (X is not None and Y is not None) and \
-        isSymmetric(X.left, Y.right) and \
-        isSymmetric(X.right, Y.left)
+    def has_cycle(self):
+        """
+        Определяет, является ли граф деревом.
 
+        Returns:
+            True, если граф является деревом, False в противном случае.
+        """
 
-# Функция для проверки того, имеет ли данное бинарное дерево симметричную структуру или нет.
-def isSymmetricTree(root):
-    # Базовый вариант
-    if not root:
-        return True
+        visited = set()
+        in_stack = set()
 
-    # возвращает true, если левое и правое поддеревья зеркально отражают друг друга
-    return isSymmetric(root.left, root.right)
+        def dfs(node):
+            visited.add(node)
+            in_stack.add(node)
 
+            for neighbor in self._G.neighbors(node):
+                if neighbor in visited and neighbor not in in_stack:
+                    return True
 
-root = Node(1)
-root.left = Node(2)
-root.right = Node(3)
-root.left.right = Node(4)
-root.right.left = Node(5)
+                if neighbor not in visited:
+                    if dfs(neighbor):
+                        return True
 
-if isSymmetricTree(root):
-    print('The binary tree is symmetric')
-else:
-    print('The binary tree is not symmetric')
+            in_stack.remove(node)
+            return False
+
+        for node in self._G.nodes():
+            if node not in visited:
+                if dfs(node):
+                    return True
+
+        return False
+
+    def diameter(self):
+        """
+        Находит диаметр дерева.
+
+        Returns:
+            Число, равное диаметру дерева.
+        """
+
+        if not self.is_tree():
+            raise ValueError("Граф не является деревом")
+
+        # Находим самую длинную цепочку в дереве.
+
+        chain = nx.shortest_path(self._G, source=None, target=None, weight=None)
+
+        return len(chain) - 1
+
