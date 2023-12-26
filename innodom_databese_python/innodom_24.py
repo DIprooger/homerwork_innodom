@@ -34,7 +34,7 @@ cursor.execute("""
         deletion TIMESTAMP DEFAULT NULL
     )
 """)
-
+connection.commit()
 
 # - вставьте несколько записей в таблицу "Books" с информацией о различных книгах, включая название, автора,
 # год издания и цену.
@@ -56,6 +56,7 @@ cursor.execute("""
 
 print("_________________________________________________________________________________________________________________")
 # - выберите все записи из таблицы "Books", отсортированные по году издания в порядке возрастания.
+connection.commit()
 
 cursor.execute("""
     SELECT * FROM Books
@@ -85,6 +86,8 @@ cursor.execute("""
     SET title = 'Новый роман любви'
     WHERE id = 1;
 """)
+connection.commit()
+
 cursor.execute("SELECT * FROM Books")
 for row in cursor.fetchall():
     print(row)
@@ -98,6 +101,8 @@ cursor.execute("""
     SET deletion = CURRENT_TIMESTAMP
     WHERE year < 2001;
 """)
+connection.commit()
+
 cursor.execute("""
     SELECT * FROM Books
     WHERE deletion IS NULL

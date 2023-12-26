@@ -1,7 +1,7 @@
 # 1. Найти все простые циклы в графе.
 
 import networkx as nx
-#
+
 # # Создаем граф
 # G = nx.DiGraph()
 # G.add_edges_from([(1, 2), (1, 3), (2, 3), (3, 4), (4, 5), (4, 1)])
@@ -113,95 +113,59 @@ import networkx as nx
 
 # 5.* Написать свой класс для работы с графом.
 
+
 import networkx as nx
 
-
-class Tree:
-    """
-    Класс для работы с деревом.
-
-    Args:
-        G: Граф, представляющий дерево.
-    """
-
-    def __init__(self, G):
-        self._G = G
-        self._root = find_root(G)
-
-    @property
-    def root(self):
-        """
-        Возвращает корень дерева.
-
-        Returns:
-            Вершина, являющаяся корнем дерева.
-        """
-
-        return self._root
-
-    def is_symmetric(self):
-        """
-        Проверяет, является ли дерево симметричным.
-
-        Returns:
-            True, если дерево симметрично, False в противном случае.
-        """
-
-        edges = self._G.edges()
-
-        for u, v in edges:
-            if (v, u) not in edges:
-                return False
-
-        return True
-
-    def has_cycle(self):
-        """
-        Определяет, является ли граф деревом.
-
-        Returns:
-            True, если граф является деревом, False в противном случае.
-        """
-
-        visited = set()
-        in_stack = set()
-
-        def dfs(node):
-            visited.add(node)
-            in_stack.add(node)
-
-            for neighbor in self._G.neighbors(node):
-                if neighbor in visited and neighbor not in in_stack:
-                    return True
-
-                if neighbor not in visited:
-                    if dfs(neighbor):
-                        return True
-
-            in_stack.remove(node)
-            return False
-
-        for node in self._G.nodes():
-            if node not in visited:
-                if dfs(node):
-                    return True
-
-        return False
-
-    def diameter(self):
-        """
-        Находит диаметр дерева.
-
-        Returns:
-            Число, равное диаметру дерева.
-        """
-
-        if not self.is_tree():
-            raise ValueError("Граф не является деревом")
-
-        # Находим самую длинную цепочку в дереве.
-
-        chain = nx.shortest_path(self._G, source=None, target=None, weight=None)
-
-        return len(chain) - 1
-
+# class MyGraph:
+#
+#     def __init__(self, nodes=None, edges=None, directed=False):
+#         self.graph = nx.Graph(directed)
+#
+#         if nodes is not None:
+#             for node in nodes:
+#                 self.graph.add_node(node)
+#
+#         if edges is not None:
+#             for edge in edges:
+#                 self.graph.add_edge(*edge)
+#
+#     def add_node(self, node):
+#         self.graph.add_node(node)
+#
+#     def add_edge(self, node1, node2, weight=None):
+#         self.graph.add_edge(node1, node2, weight)
+#
+#     def get_nodes(self):
+#         return self.graph.nodes()
+#
+#     def get_edges(self):
+#         return self.graph.edges()
+#
+#     def get_node_neighbors(self, node):
+#         return self.graph.neighbors(node)
+#
+#     def get_edge_weight(self, node1, node2):
+#         return self.graph.get_edge_data(node1, node2)['weight']
+#
+#     def set_edge_weight(self, node1, node2, weight):
+#         self.graph.edges[node1, node2]['weight'] = weight
+#
+#     def remove_node(self, node):
+#         self.graph.remove_node(node)
+#
+#     def remove_edge(self, node1, node2):
+#         self.graph.remove_edge(node1, node2)
+#
+#     def __repr__(self):
+#         return str(self.graph)
+#
+# nodes = ["A", "B", "C"]
+# edges = [("A", "B", 10), ("B", "C", 20)]
+#
+# graph = MyGraph(nodes, edges)
+#
+# print(graph.get_nodes())
+# # ['A', 'B', 'C']
+#
+# print(graph.get_edges())
+# # [('A', 'B', {'weight': 10}), ('B', 'C', {'weight': 20})]
