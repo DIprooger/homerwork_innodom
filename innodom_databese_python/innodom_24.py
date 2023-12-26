@@ -35,7 +35,7 @@ cursor.execute("""
 """)
 
 try:
-    connection.begin()
+    cursor.execute("BEGIN")
     cursor.execute("""
         INSERT INTO Authors(id, name, country, date_of_birth)
         VALUES
@@ -52,6 +52,7 @@ try:
     connection.commit()
 except Exception as e:
     print(e)
+    connection.rollback()
 
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS Books(
@@ -70,7 +71,7 @@ cursor.execute("""
 # год издания и цену.
 
 try:
-    connection.begin()
+    cursor.execute("BEGIN")
     cursor.execute("""
         INSERT INTO Books (id, title, author_id, year, price)
         VALUES
@@ -87,6 +88,7 @@ try:
     connection.commit()
 except Exception as e:
     print(e)
+    connection.rollback()
 
 
 print("_________________________________________________________________________________________________________________")
