@@ -23,28 +23,25 @@ front_balance_from_date = {"id": 1, "user_balance": "df", "user_id": 1}
 
 #
 def create_new_user(manager, form_data):
-    user = User(**form_data)
-
-    manager.add(user)
-    raise DisconnectionError("Something went wrong")
-
-    manager.commit()
+    try:
+        user = User(**form_data)
+        manager.add(user)
+        manager.commit()
+    except Exception:
+        manager.rollback()
 
 
 def write_user_balance(manager, form_data):
-    balance = Balance(**form_data)
-
-    manager.add(balance)
-
-    manager.commit()
+    try:
+        balance = Balance(**form_data)
+        manager.add(balance)
+        manager.commit()
+    except Exception:
+        manager.rollback()
 
 
 with DBConnector(db_url=db_url) as session:
-    try:
-        create_new_user(manager=session, form_data=front_user_data)
-        write_user_balance(manager=session, form_data=front_balance_from_date)
-    except DisconnectionError as e:
-        print(e)
-        session.rollback()
-    except Exception as e:
-        print(e)
+     create_new_user(manager=session, form_data=front_user_data)
+     write_user_balance(manager=session, form_data=front_balance_from_date)
+
+
