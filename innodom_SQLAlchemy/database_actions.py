@@ -23,7 +23,6 @@ front_balance_from_date = {"id": 1, "user_balance": "df", "user_id": 1}
 
 #
 def create_new_user(manager, form_data):
-    try:
     user = User(**form_data)
 
     manager.add(user)
