@@ -3,7 +3,7 @@ from homerwor_programing_innodom.innodom_SQLAlchemy.db_engine import db_url
 from homerwor_programing_innodom.innodom_SQLAlchemy.models import User, Balance
 
 front_user_data = [
-    {
+{
     "id": 1,
     "name": "Peter",
     "surname": "Smith",
@@ -61,25 +61,25 @@ front_balance_from_date = [
 },
 {
     "id": 3,
-    "user_id": 2,
+    "user_id": 3,
     "user_balance": 1100.00,
     "create_at": "2023-08-02"
 },
 {
     "id": 4,
-    "user_id": 2,
+    "user_id": 4,
     "user_balance": 1200.00,
     "create_at": "2023-08-03"
 },
 {
     "id": 5,
-    "user_id": 3,
+    "user_id": 5,
     "user_balance": 500.00,
     "create_at": "2023-09-01"
 },
 {
     "id": 6,
-    "user_id": 3,
+    "user_id": 6,
     "user_balance": 600.00,
     "create_at": "2023-09-02"
 }]
@@ -88,8 +88,9 @@ front_balance_from_date = [
 #
 def create_new_user(manager, form_data):
     try:
-        user = User(**form_data)
-        manager.add(user)
+        for row in form_data:
+            user = User(**row)
+            manager.add(user)
         manager.commit()
     except Exception as e:
         print(e)
@@ -98,8 +99,9 @@ def create_new_user(manager, form_data):
 
 def write_user_balance(manager, form_data):
     try:
-        balance = Balance(**form_data)
-        manager.add(balance)
+        for row in form_data:
+            balance = Balance(**row)
+            manager.add(balance)
         manager.commit()
     except Exception as e:
         print(e)
