@@ -14,14 +14,7 @@ from sqlalchemy.orm import (
 )
 from sqlalchemy import text
 from homerwor_programing_innodom.innodom_SQLAlchemy.db_connect import DBConnector
-import os
-import environ
-from urllib.parse import quote
-
-BASE_DIR = '/home/diana/Desktop/Python/тренировка/homerwor_programing_innodom/innodom_SQLAlchemy'
-env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.evn'))
-db_url = f"postgresql://{env('DB_USER_POS')}:{quote(env('DB_PASSWORD_POS'))}@{env('DB_HOST_POS')}:{env('DB_PORT_POS')}/{env('DB_NAME_POS')}"
+from homerwor_programing_innodom.innodom_SQLAlchemy.db_engine import db_url
 
 Base = declarative_base()
 
