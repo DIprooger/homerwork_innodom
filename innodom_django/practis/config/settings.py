@@ -13,9 +13,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 import environ
+# import homerwor_programing_innodom.innodom_django.practis.apps.news.apps
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-# BASE_DIR = "/home/diana/Desktop/Python/тренировка/homerwor_programing_innodom/innodom_django/innodom_25"
 
 
 # Quick-start development settings - unsuitable for production
@@ -43,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # local
-    'users'
+    # 'apps.news.apps.NewsConfig',
+    'apps',
+    # 'apps.news.apps.NewsConfig',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +64,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
