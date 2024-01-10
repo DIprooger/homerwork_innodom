@@ -9,7 +9,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=50)
     category = models.ForeignKey(
-        Categoru,
+        Category,
         null=True,
         blank=True,
         on_delete=models.DO_NOTHING
