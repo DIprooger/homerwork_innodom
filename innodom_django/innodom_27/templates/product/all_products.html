@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    All Product
+{% endblock %}
+
+{% block content %}
+    <div class="products">
+        {% for product in products %}
+        <a href="{% url 'product:product-info' product.id %}" class="product-link">
+            <div class="product">
+            <h2>name: {{ product.name }}</h2>
+            <h4>category: {{ product.category }}</h4>
+            <h4><b>prise: {{ product.prise }}</b></h4>
+            <h4><p>created: {{ product.created_at }}</p></h4>
+        </div>
+        </a>
+        {% endfor %}
+    </div>
+{% endblock %}

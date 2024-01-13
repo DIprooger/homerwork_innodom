@@ -5,6 +5,13 @@ from django.dispatch import receiver
 class Category(models.Model):
     name = models.CharField(max_length=30)
 
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categorys'
+
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
@@ -14,9 +21,9 @@ class Product(models.Model):
         blank=True,
         on_delete=models.DO_NOTHING
     )
-    prise = models.IntegerField(max_length=10)
-    created_at = models.DateTimeField(auto_created=True)
-    updated_at = models.DateTimeField(null=True, blank=True)
+    prise = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:

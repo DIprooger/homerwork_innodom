@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+
+{% block content %}
+    <div class="product-content">
+        <div class="product-block">
+            <div class="product-info">
+                <h2><span class="product-info-fields">Name: </span>{{ product.name }}</h2>
+                <h4><span class="product-info-fields">Category: </span>{{ product.category }}</h4>
+                <h4><span class="product-info-fields">Prise: </span><b>{{ product.prise }}</b></h4>
+            </div>
+            <div class="button-container">
+                <a href="{% url 'product:update-product' product.id %}" class="update-button">Update</a>
+                <a href="{% url 'product:delete-product' product.id %}" class="delete-button">Delete</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

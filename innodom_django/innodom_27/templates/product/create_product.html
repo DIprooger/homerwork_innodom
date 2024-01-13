@@ -1,0 +1,37 @@
+{% extends 'main.html' %}
+{% block title %}
+    Create New Product
+{% endblock %}
+
+{% block content %}
+    <div class="new-product-name">
+        Create New Product
+    </div>
+    <div class="new-product-container">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" maxlength="25" placeholder="Name">
+            </div>
+
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select class="form-control" id="category" name="category">
+                    <option value="" selected="">---</option> <!-- For optional category -->
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="prise" class="form-label">Prise</label>
+                <input class="form-control" id="prise" name="prise" maxlength="15" placeholder="Prise">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+{% endblock %}
