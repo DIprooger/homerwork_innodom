@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Основной шаблон</title>
+</head>
+<body>
+    <header>
+        <h1>Заголовок</h1>
+    </header>
+
+    {% include 'sidebar.html' %}
+
+    <main>
+        {% block main %}
+        <h2>Основное содержимое</h2>
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>Футер</p>
+    </footer>
+</body>
+</html>

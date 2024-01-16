@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Мой сайт{% endblock %}</title>
+</head>
+<body>
+  <header>
+    <h1>Мой сайт</h1>
+    <nav>
+      <ul>
+        <li><a href="{% url 'home' %}">Главная</a></li>
+        <li><a href="{% url 'main' %}">Услуги</a></li>
+        <li><a href="{% url 'contact' %}">Контакты</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+  <footer>
+    &copy; 2023
+  </footer>
+</body>
+</html>
+
