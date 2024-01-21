@@ -2,15 +2,27 @@ from django.db import models
 from django.contrib.auth.admin import User
 
 
+class Status(models.Model):
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Status'
+        verbose_name_plural = 'Statuses'
+
+
 class Task(models.Model):
     title = models.CharField(max_length=30, default='Enter title: ')
     description = models.TextField(max_length=100)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
-    status = models.IntegerField(choices=[
-        (1, 'В ожидании'),
-        (2, 'В процессе'),
-        (3, 'Завершено')
-    ])
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.SET(1),
+        blank=True,
+        null=True
+    )
     date_started = models.DateField(help_text="День, когда задача должна начаться")
     deadline = models.DateField(help_text="День, когда задача должна быть выполнена")
     updated_at = models.DateTimeField(auto_now=True)
