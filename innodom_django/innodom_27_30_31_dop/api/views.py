@@ -208,10 +208,13 @@ class UserViewSet(ModelViewSet):
 # получить информацию о статье в формате JSON, используя метод GET, обновить данные статьи, используя метод PUT или
 # PATCH, и удалить статью, используя метод DELETE.
 
+from api.messages import PRODUCT_SUCCESS_CREATED_MESSAGE
+
+
 class ProductInfoGenericView(RetrieveUpdateDestroyAPIView):
     serializer_class = AllProductsSerializers
 
-    def update_subtask_info(self, instance):
+    def update_product_info(self, instance):
         serializer = self.serializer_class(
             instance=instance,
             data=self.request.data
@@ -223,10 +226,10 @@ class ProductInfoGenericView(RetrieveUpdateDestroyAPIView):
         return serializer.data
 
     def get_object(self):
-        subtask_id = self.kwargs.get('product_id')
+        product_id = self.kwargs.get('product_id')
         subtask = get_object_or_404(
             Product,
-            id=subtask_id
+            id=product_id
         )
 
         return subtask
@@ -244,12 +247,12 @@ class ProductInfoGenericView(RetrieveUpdateDestroyAPIView):
     def put(self, request: Request, *args, **kwargs):
         subtask = self.get_object()
 
-        data = self.update_subtask_info(instance=subtask)
+        data = self.update_product_info(instance=subtask)
 
         return Response(
             status=status.HTTP_201_CREATED,
             data={
-                "message": SUBTASK_SUCCESS_CREATED_MESSAGE,
+                "message": PRODUCT_SUCCESS_CREATED_MESSAGE,
                 "data": data
             }
         )
@@ -261,7 +264,7 @@ class ProductInfoGenericView(RetrieveUpdateDestroyAPIView):
 
         return Response(
             status=status.HTTP_200_OK,
-            data=SUBTASK_SUCCESS_DELETED_MESSAGE
+            data=PRODUCT_SUCCESS_CREATED_MESSAGE
         )
 
 
@@ -288,3 +291,5 @@ class ProductsAllPIView(ListCreateAPIView):
             status=status.HTTP_200_OK,
             data=serializer.data
         )
+
+

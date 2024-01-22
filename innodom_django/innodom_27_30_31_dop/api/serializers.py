@@ -7,6 +7,7 @@ from product.models import (
     Comment,
 )
 
+
 # Домашнее 30
 # Напишите ModelSerializer для всех трёх моделей
 
@@ -24,6 +25,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class AllProductsSerializers(serializers.ModelSerializer):
+
     class Meta:
         model = Product
         fields = [
@@ -32,11 +34,13 @@ class AllProductsSerializers(serializers.ModelSerializer):
             'category',
             'prise',
             'created_at',
+            'language'
         ]
 
-    # домашнее 30
-    # Serializer реализуйте метод, который позволит пользователю ввести идентификатор товара, а
-    # затем вернет его рейтинг и список всех комментариев, связанных с этим товаром.
+
+# домашнее 30
+# Serializer реализуйте метод, который позволит пользователю ввести идентификатор товара, а
+# затем вернет его рейтинг и список всех комментариев, связанных с этим товаром.
 
 
 class InfoProductSerializer(serializers.ModelSerializer):

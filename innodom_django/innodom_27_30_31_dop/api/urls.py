@@ -12,7 +12,7 @@ from api.views import (
     InfoProductGenericView,
     UserViewSet,
     ProductsAllPIView,
-    ProductInfoGenericView
+    ProductInfoGenericView,
 )
 
 router = DefaultRouter()
