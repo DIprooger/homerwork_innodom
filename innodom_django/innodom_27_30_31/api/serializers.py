@@ -1,11 +1,14 @@
 from rest_framework import serializers
-
+from django.contrib.auth.admin import User
 from product.models import (
     Category,
     Product,
     Rating,
     Comment,
 )
+
+# Домашнее 30
+# Напишите ModelSerializer для всех трёх моделей
 
 
 class RatingSerializer(serializers.ModelSerializer):
@@ -18,6 +21,22 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+
+
+class AllProductsSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = [
+            'id',
+            'name',
+            'category',
+            'prise',
+            'created_at',
+        ]
+
+    # домашнее 30
+    # Serializer реализуйте метод, который позволит пользователю ввести идентификатор товара, а
+    # затем вернет его рейтинг и список всех комментариев, связанных с этим товаром.
 
 
 class InfoProductSerializer(serializers.ModelSerializer):
@@ -36,16 +55,7 @@ class InfoProductSerializer(serializers.ModelSerializer):
         ]
 
 
-class AllProductsSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = [
-            'id',
-            'name',
-            'category',
-            'prise',
-            'created_at',
-        ]
+
 
 
 from api.error_messages import CATEGORY_NAME_LEN_ERROR_MESSAGE
@@ -72,4 +82,10 @@ class RaitingSerializers(serializers.ModelSerializer):
 class CommentSerializers(serializers.ModelSerializer):
     class Meta:
         model = Comment
+        fields = '__all__'
+
+
+class UserSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
         fields = '__all__'

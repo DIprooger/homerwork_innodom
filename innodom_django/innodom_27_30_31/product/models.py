@@ -12,7 +12,8 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-
+# Домашнее 30
+# Создайте модели Product, Rating и Comment, где Product будет иметь отношение "один-ко-многим" к Rating и Comment.
 class Rating(models.Model):
     name = models.CharField(max_length=30)
 
