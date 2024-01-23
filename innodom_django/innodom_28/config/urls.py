@@ -20,7 +20,14 @@ from task.views import (
     home_page,
     get_all_task,
     create_new_task,
-    update_task
+    get_task_info_by_task_id,
+    update_task,
+    delete_task,
+    get_comment_info,
+    get_comment_info_by_id,
+    update_comment,
+    delete_comment,
+    create_comment
 )
 from user.views import (
     us_login,
@@ -34,8 +41,17 @@ urlpatterns = [
     path('', home_page, name='home'),
     path('task/', get_all_task, name='all-task'),
     path('create/', create_new_task, name='create-task'),
-    path('update-task/', update_task, name='update-task'),
+    path("<int:task_id>/", get_task_info_by_task_id, name='task-info'),
+    path("<int:task_id>/update/", update_task, name='update-task'),
+    path("<int:task_id>.delete/", delete_task, name='delete-task'),
 
+]
+urlpatterns += [
+    path("comment/", get_comment_info, name='all-comment'),
+    path("comment/<int:comment_id>/", get_comment_info_by_id, name='comment-info'),
+    path("comment/<int:comment_id>/update/", update_comment, name='update-comment'),
+    path("comment/<int:comment_id>/delete", delete_comment, name='delete-comment'),
+    path("comment/create/", create_comment, name='create-comment'),
 ]
 urlpatterns += [
     path("login/", us_login, name='login'),
@@ -43,5 +59,3 @@ urlpatterns += [
     path("info/", us_info, name='info'),
     path("log-out/", us_logout, name='log-out')
 ]
-
-

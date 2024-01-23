@@ -1,0 +1,45 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    {{ task.title }}
+{% endblock %}
+
+{% block content %}
+    <div class="task-content">
+        <div class="task-block">
+            <div class="task-info">
+                <h2><span class="task-info-fields">Title: </span>{{ task.title }}</h2>
+                <h4><span class="task-info-fields">Category: </span>{{ task.category }}</h4>
+                <p><span class="task-info-fields">Description: </span>{{ task.description }}</p>
+                <h4><span class="task-info-fields">Creator: </span>{{ task.creator }}</h4>
+                <h4><span class="task-info-fields">Date started: </span>{{ task.date_started }}</h4>
+                <h4><span class="task-info-fields">Deadline: </span>{{ task.deadline }}</h4>
+            </div>
+            <div class="button-container">
+                <a href="{% url 'update-task' task.id %}" class="update-button">Update</a>
+                <a href="{% url 'delete-task' task.id %}" class="delete-button">Delete</a>
+                <a href="{% url 'create-comment' %}?task_id={{ task.id }}" class="create-subtask">Create comment</a>
+            </div>
+        </div>
+        {% if comments %}
+            <div class="task-subtasks">
+                {% for comment in comments %}
+                    <div class="subtask-info">
+                        <a href="{% url 'comment-info' comment.id %}" class="subtask-title">
+                            {{ comment.title|slice:":10" }}{% if comment.title|length > 10 %}...{% endif %}
+                        </a>
+                        <div class="button-container">
+                            <a href="{% url 'update-comment' comment.id %}" class="update-button">Update</a>
+                            <a href="{% url 'delete-comment' comment.id %}" class="delete-button">Delete</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-subtasks-block">
+                <h1>You don't have any comment for this task</h1>
+                <a href="{% url 'create-comment' %}?task_id={{ task.id }}" class="create-subtask">Create comment</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

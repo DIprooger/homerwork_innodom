@@ -7,7 +7,7 @@
 {% block content %}
     <div class="tasks">
         {% for task in tasks %}
-            <a href="{% url 'update-task' %}" class="task-link">
+            <a href="{% url 'task-info' task.id %}" class="task-link">
                 <div class="task">
                     <h2><span class="task-description">Title: </span>{{ task.title }}</h2>
                     <h4><span class="task-description">Status: </span><b>{{ task.status }}</b></h4>

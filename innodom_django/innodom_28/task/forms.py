@@ -5,7 +5,7 @@ from django.forms import (
     widgets,
     ModelChoiceField
 )
-from task.models import Task, Status
+from task.models import Task, Status, Comment
 
 
 class CreateTask(ModelForm):
@@ -29,8 +29,21 @@ class TaskUpdateForm(ModelForm):
         fields = (
             'title',
             'description',
-            'creator',
             'status',
-            'date_started',
             'deadline'
         )
+
+
+class CommentCreateForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = [
+            'title',
+            'creator'
+        ]
+
+
+class CommentUpdateForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['title',]

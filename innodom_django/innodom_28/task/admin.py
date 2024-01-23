@@ -9,7 +9,7 @@ class TaskAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('title', 'task', 'creator')
+    list_display = ('title', 'creator')
 
 
 @admin.register(Status)

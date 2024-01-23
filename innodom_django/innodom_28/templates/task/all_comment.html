@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+
+{% block title %}
+	All Subtasks
+{% endblock %}
+
+{% block content %}
+    <div class="subtasks">
+        {% if comments %} <!-- Мы можем написать условие, что если сабтаски есть - отображаем их все. -->
+            {% for comment in comments %} <!-- -->
+                <a href="{% url 'comment-info' comment.id %}" class="subtask-link">
+                    <div class="subtask">
+                        <h2><span class="subtask-description">Title: </span>{{ comment.title }}</h2>
+                    </div>
+                </a>
+            {% endfor %} <!-- -->
+        {% else %} <!-- Иначе мы отображать будем спец окошко, мол нет ни одной подзадачи -->
+            <div class="no-subtasks-block">
+                <h1>Looks like you don't have any comment!</h1>
+            </div>
+        {% endif %} <!-- Всегда явно указываем закрытие наших блоков. Потому что html за них не шарит. -->
+    </div>
+{% endblock %}

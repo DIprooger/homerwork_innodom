@@ -1,16 +1,23 @@
 from django.shortcuts import render, redirect
-from task.models import Task, Status
+from task.models import (
+    Task,
+    Status,
+    Comment
+)
 from django.contrib.auth.models import User
-from task.forms import CreateTask, TaskUpdateForm
+from task.forms import (
+    CreateTask,
+    TaskUpdateForm,
+    CommentCreateForm,
+    CommentUpdateForm
+)
 from django.shortcuts import (
     get_object_or_404,
 )
-
-# Status.objects.create(name="В ожидании")
-# Status.objects.create(name="В процессе")
-# Status.objects.create(name="Завершено")
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='login')
 def home_page(request):
     task = Task.objects.all()
     context = {'tasks': task}
@@ -21,6 +28,7 @@ def home_page(request):
     )
 
 
+@login_required(login_url='login')
 def get_all_task(request):
     tasks = Task.objects.all()
     context = {
@@ -33,6 +41,7 @@ def get_all_task(request):
     )
 
 
+@login_required(login_url='login')
 def create_new_task(request):
     statuses = Status.objects.all()
     creators = User.objects.all()
@@ -63,12 +72,13 @@ def create_new_task(request):
     )
 
 
-def update_task(request):
-    task = Task.objects.all()
+@login_required(login_url='login')
+def update_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
     statuses = Status.objects.all()
 
     if request.method == 'POST':
-        form = TaskUpdateForm(request.POST)
+        form = TaskUpdateForm(request.POST, instance=task)
 
         if form.is_valid():
             form.save()
@@ -80,7 +90,7 @@ def update_task(request):
             "statuses": statuses
         }
     else:
-        form = TaskUpdateForm()
+        form = TaskUpdateForm(instance=task)
 
         context = {
             "form": form,
@@ -90,6 +100,131 @@ def update_task(request):
 
     return render(
         request=request,
-        template_name='update_task.html',
+        template_name='task/update_task.html',
         context=context
     )
+
+
+@login_required(login_url='login')
+def get_task_info_by_task_id(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    comments = Comment.objects.filter(
+        task=task_id
+    )
+
+    context = {
+        "task": task,
+        "comments": comments
+    }
+#####
+    return render(
+        request=request,
+        template_name='task/task_info.html',
+        context=context
+    )
+
+
+@login_required(login_url='login')
+def delete_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
+    task.delete()
+    return redirect('all-task')
+
+
+@login_required(login_url='login')
+def get_comment_info(request):
+    comments = Comment.objects.filter(
+        creator=request.user
+    )
+
+    context = {
+        "comments": comments
+    }
+
+    return render(
+        request=request,
+        template_name='task/all_comment.html',
+        context=context
+    )
+
+
+@login_required(login_url='login')
+def get_comment_info_by_id(request, comment_id):
+    comments = get_object_or_404(Comment, id=comment_id)
+
+    context = {
+        "comments": comments
+    }
+
+    return render(
+        request=request,
+        template_name='task/comment_info.html',
+        context=context
+    )
+
+
+@login_required(login_url='login')
+def create_comment(request):
+    task_id = request.GET.get("task_id")
+
+    user = get_object_or_404(User, id=request.user.id)
+    statuses = Status.objects.all()
+    task = get_object_or_404(Task, id=task_id)
+
+    form = CommentCreateForm()
+
+    if request.method == 'POST':
+        form = CommentCreateForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('task-info', task_id=task_id)
+
+    context = {
+        "form": form,
+        "user": user,
+        "statuses": statuses,
+        "task": task
+    }
+
+    return render(
+        request=request,
+        template_name='task/create_comment.html',
+        context=context
+    )
+
+
+@login_required(login_url='login')
+def update_comment(request, comment_id):
+    comments = get_object_or_404(Comment, id=comment_id)
+
+    form = CommentUpdateForm(instance=comments)
+
+    if request.method == 'POST':
+        form = CommentUpdateForm(request.POST, instance=comments)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('all-comment')
+
+    context = {
+        "form": form,
+        "comments": comments,
+    }
+
+    return render(
+        request=request,
+        template_name='task/update_comment.html',
+        context=context
+    )
+
+
+@login_required(login_url='login')
+def delete_comment(request, comment_id):
+    subtask = get_object_or_404(Comment, id=comment_id)
+
+    subtask.delete()
+    return redirect('all-comment')

@@ -1,0 +1,17 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    Subtask Info
+{% endblock %}
+
+{% block content %}
+    <div class="subtask-container">
+        <div class="subtask-block">
+            <h2 class="subtask-block-info"><span class="subtask-info-fields">Title: </span>{{ comment.title }}</h2>
+        </div>
+        <div class="button-container">
+            <a href="{% url 'update-comment' comment.id %}" class="update-button">Update</a>
+            <a href="#" class="delete-button">Delete</a>
+        </div>
+    </div>
+{% endblock %}
