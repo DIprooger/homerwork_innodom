@@ -44,8 +44,17 @@ class Product(models.Model):
         blank=True,
         on_delete=models.DO_NOTHING
     )
-    rating = models.ManyToManyField(Rating, related_name='rating')
-    comments = models.ManyToManyField(Comment, related_name='comment')
+    rating = models.ManyToManyField(
+        Rating,
+        null=True,
+        blank=True,
+        related_name='rating')
+    comments = models.ManyToManyField(
+        Comment,
+        null=True,
+        blank=True,
+        related_name='comment'
+    )
     prise = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

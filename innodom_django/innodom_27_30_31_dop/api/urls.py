@@ -13,8 +13,12 @@ from api.views import (
     UserViewSet,
     ProductsAllPIView,
     ProductInfoGenericView,
+    UserRegistrationGenericView
 )
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 router = DefaultRouter()
 router.register(r'category', CategoryViewSet)
 router.register(r'rating', RatingViewSet)
@@ -29,4 +33,7 @@ urlpatterns = [
     path('products/<int:product_id>/', AllProductsGenericView.as_view()),
     path('info-product/<int:product_id>/', InfoProductGenericView.as_view()),
     path('products-all/<int:product_id>/', ProductInfoGenericView.as_view()),
+    path('auth/register/', UserRegistrationGenericView.as_view()),
+    path('token/', TokenObtainPairView.as_view()),
+    path('token/refresh/', TokenRefreshView.as_view()),
 ] + router.urls

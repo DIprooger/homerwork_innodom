@@ -2,14 +2,15 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework import status
 from rest_framework.decorators import (api_view, )
-from django.contrib.auth.admin import User
+from user.models import User
 from api.serializers import (
     AllProductsSerializers,
     CategorySerializers,
     RaitingSerializers,
     CommentSerializers,
     InfoProductSerializer,
-    UserSerializers
+    UserSerializers,
+    UserRegisterSerializer
 )
 from product.models import (
     Product,
@@ -17,6 +18,18 @@ from product.models import (
     Rating,
     Comment
 )
+from rest_framework.views import APIView, Request
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import (
+    RetrieveAPIView,
+    get_object_or_404,
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+    CreateAPIView
+)
+from rest_framework.viewsets import ModelViewSet
+from api.messages import PRODUCT_SUCCESS_CREATED_MESSAGE
 
 
 @api_view(['GET'])
@@ -83,11 +96,6 @@ def create_new_product(request: Request):
     )
 
 
-from rest_framework.views import APIView, Request
-from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import IsAuthenticated
-
-
 # Задание 31
 # Задание 2
 # Создайте APIView, которое позволяет получить список всех товаров из базы данных. Пользователи должны иметь \
@@ -134,14 +142,6 @@ class ProductApiView(APIView):
             )
 
 
-from rest_framework.generics import (
-    RetrieveAPIView,
-    get_object_or_404,
-    ListCreateAPIView,
-    RetrieveUpdateDestroyAPIView
-)
-
-
 class AllProductsGenericView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = AllProductsSerializers
@@ -163,9 +163,6 @@ class InfoProductGenericView(RetrieveAPIView):
         product = get_object_or_404(Product, id=product_id)
 
         return product
-
-
-from rest_framework.viewsets import ModelViewSet
 
 
 class CategoryViewSet(ModelViewSet):
@@ -207,8 +204,6 @@ class UserViewSet(ModelViewSet):
 # информацию об отдельной статье по её уникальному идентификатору (ID). Пользователи должны иметь возможность
 # получить информацию о статье в формате JSON, используя метод GET, обновить данные статьи, используя метод PUT или
 # PATCH, и удалить статью, используя метод DELETE.
-
-from api.messages import PRODUCT_SUCCESS_CREATED_MESSAGE
 
 
 class ProductInfoGenericView(RetrieveUpdateDestroyAPIView):
@@ -279,7 +274,6 @@ class ProductsAllPIView(ListCreateAPIView):
         product = self.get_queryset()
 
         if not product:
-
             return Response(
                 status=status.HTTP_204_NO_CONTENT,
                 data=[]
@@ -293,3 +287,21 @@ class ProductsAllPIView(ListCreateAPIView):
         )
 
 
+class UserRegistrationGenericView(CreateAPIView):
+    serializer_class = UserRegisterSerializer
+
+    def post(self, request: Request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+
+            return Response(
+                status=status.HTTP_201_CREATED,
+                data=serializer.data
+            )
+
+        return Response(
+            status=status.HTTP_400_BAD_REQUEST,
+            data=serializer.errors
+        )
