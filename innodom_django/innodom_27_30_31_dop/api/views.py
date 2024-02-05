@@ -10,7 +10,8 @@ from api.serializers import (
     CommentSerializers,
     InfoProductSerializer,
     UserSerializers,
-    UserRegisterSerializer
+    UserRegisterSerializer,
+    UserListSerializer
 )
 from product.models import (
     Product,
@@ -20,17 +21,20 @@ from product.models import (
 )
 from rest_framework.views import APIView, Request
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import (
     RetrieveAPIView,
     get_object_or_404,
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
-    CreateAPIView
+    CreateAPIView,
+    ListAPIView
 )
 from rest_framework.viewsets import ModelViewSet
 from api.messages import PRODUCT_SUCCESS_CREATED_MESSAGE
-
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAdminUser
+)
 
 @api_view(['GET'])
 def product_list(request: Request):
@@ -304,4 +308,30 @@ class UserRegistrationGenericView(CreateAPIView):
         return Response(
             status=status.HTTP_400_BAD_REQUEST,
             data=serializer.errors
+        )
+
+
+class ListAllUsersGenericView(ListAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = UserListSerializer
+
+    def get_queryset(self):
+        users = User.objects.all()
+
+        return users
+
+    def get(self, request: Request, *args, **kwargs):
+        users = self.get_queryset()
+
+        if not users:
+            return Response(
+                status=status.HTTP_204_NO_CONTENT,
+                data=[]
+            )
+
+        serializer = self.serializer_class(users, many=True)
+
+        return Response(
+            status=status.HTTP_200_OK,
+            data=serializer.data
         )
