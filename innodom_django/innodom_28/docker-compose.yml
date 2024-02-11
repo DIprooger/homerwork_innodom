@@ -13,7 +13,7 @@ services:
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-d", "innodom", "-U", "postgres"]
       interval: 10s
-      timeout: 5s
+      timeout: 5s # Устанавливаем время ожидания запроса пользователя в 5 секунд
       retries: 5
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
