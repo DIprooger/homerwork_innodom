@@ -36,6 +36,9 @@ from rest_framework.permissions import (
     IsAdminUser
 )
 
+from api.mixin import MultiLanguageMixin
+
+
 @api_view(['GET'])
 def product_list(request: Request):
     product = Product.objects.all()
