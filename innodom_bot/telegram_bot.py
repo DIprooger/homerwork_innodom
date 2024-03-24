@@ -5,7 +5,8 @@ import os
 import psycopg2
 from pathlib import Path
 
-BASE_DIR = os.path.join(os.getcwd(), '.env')
+BASE_DIR = '/home/diana/Desktop/Python/тренировка/homerwor_programing_innodom/innodom_bot'
+
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
@@ -49,7 +50,8 @@ def insert_query_into_database(name, query_text, response_text):
 
 @bot.message_handler(commands=['start'])
 def start(n):
-	@@ -14,16 +55,21 @@ def start(n):
+    bot.send_message(n.chat.id, 'Привет, {0.first_name}! Введи математическое выражение: '.format(n.from_user))
+
 
 @bot.message_handler(func=lambda message: True)
 def calculate(message):
